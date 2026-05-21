@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Car | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+<body class="admin-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo">
+        <img src="/img/ridevia_logo.webp" alt="RideVia" />
+    </div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/admin/allbookings}">Bookings</a></li>
+            <li><a th:href="@{/admin/users}">Users</a></li>
+            <li><a th:href="@{/admin/cars}" class="active">Cars</a></li>
+            <li><a th:href="@{/admin/cars/add}">Add Car</a></li>
+            <li><a th:href="@{/auth/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success" role="alert" style="margin-bottom: 1rem;">
+        <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert" style="margin-bottom: 1rem;">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{'/admin/cars/edit/' + ${carId}}"
+          method="post" enctype="multipart/form-data"
+          th:object="${car}" class="form-card">
+        <h2>Edit Car</h2>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Brand</label>
+                <input type="text" th:field="*{brand}" placeholder="e.g. Toyota" required />
+                <small class="error" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Model</label>
+                <input type="text" th:field="*{model}" placeholder="e.g. Fortuner" required />
+                <small class="error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Color</label>
+                <input type="text" th:field="*{color}" placeholder="e.g. White" required />
+                <small class="error" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></small>
+            </div>
+
+
+            <div class="form-group">
+                <label>Type</label>
+                <select th:field="*{type}" required>
+                    <option th:each="f : ${CarType}" th:value="${f}" th:text="${f}"></option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Fuel Type</label>
+                <select th:field="*{fuelType}" required>
+                    <option th:each="ft : ${fuelTypes}" th:value="${ft}" th:text="${ft}"></option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('fuelType')}" th:errors="*{fuelType}"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Price Per Hour (₹)</label>
+                <input type="number" min="1" step="0.01" th:field="*{pricePerHour}" placeholder="e.g. 300" required />
+                <small class="error" th:if="${#fields.hasErrors('pricePerHour')}" th:errors="*{pricePerHour}"></small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea th:field="*{description}" rows="3" placeholder="Add a brief car description..."></textarea>
+        </div>
+
+        <!-- Existing Images with Delete Option -->
+        <div class="form-group">
+            <label>Existing Images</label>
+            <div class="image-preview-grid">
+                <div class="image-card" th:each="img : ${car.imageUrls}">
+                    <div class="img-container">
+                        <img th:src="${img}" alt="Car Image" />
+                    </div>
+                    <div class="img-actions">
+                        <a th:href="@{'/admin/cars/delete-image?carId=' + ${carId} + '&url=' + ${img}}"
+                           class="btn small danger"
+                           onclick="return confirm('Delete this image?')">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Upload More -->
+        <div class="form-group">
+            <label>Add More Images</label>
+            <input type="file" name="imageFiles" accept=".jpg,.jpeg,.png" multiple  />
+            <small>Optional: Max 4 images (JPG/PNG), each under 4MB</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Update Car</button>
+            <a th:href="@{/admin/cars}" class="btn outline">Cancel</a>
+        </div>
+    </form>
+</main>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

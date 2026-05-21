@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+
+<body>
+<div class="form-container">
+    <div class="form-card">
+        <img src="/img/ridevia_logo.webp" alt="RideVia Logo" class="form-logo" />
+        <h2>Admin Portal</h2>
+        <p class="form-subtext">Login to manage RideVia system</p>
+
+        <!-- Flash Messages -->
+        <div th:if="${param.error}" class="alert alert-danger">Invalid email or password</div>
+        <div th:if="${param.logout}" class="alert alert-info">You have been logged out</div>
+
+        <form th:action="@{/auth/login}" method="post">
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="email" id="username" name="username" placeholder="admin@ridevia.com" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required />
+            </div>
+
+            <button type="submit" class="btn danger full-width">Login as Admin</button>
+        </form>
+
+        <div class="form-footer">
+            Not an admin? <a th:href="@{/auth/login}">User Login</a>
+        </div>
+
+        <div class="form-nav-buttons">
+            <a th:href="@{/}" class="btn outline small">← Home</a>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Payment Success | RideVia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/user.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            background-color: #ecfdf5;
+            border: 2px solid #10b981;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-container h2 {
+            color: #047857;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            font-size: 1.1rem;
+            color: #065f46;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-back {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: #1e3a8a;
+        }
+    </style>
+</head>
+<body class="user-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="nv-lg">
+        <div class="logo">
+            <img src="/img/ridevia_logo.webp" alt="RideVia" />
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/user/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/user/book}">Book</a></li>
+                <li><a th:href="@{/user/bookings}">Your Bookings</a></li>
+                <li><a th:href="@{/user/cars}">Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- User Info -->
+    <div class="user-actions">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <p class="username">User</p>
+        </div>
+        <a th:href="@{/user/profile}" class="action-link">🛠 Update Profile</a>
+        <a th:href="@{/auth/logout}" class="logout-link">🚪 Logout</a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+    <div class="success-container">
+        <h2>✅ Payment Successful!</h2>
+        <p>Your booking has been confirmed. Thank you for choosing <strong>RideVia</strong>.</p>
+        <a href="/user/bookings" class="btn-back">🔙 View My Bookings</a>
+    </div>
+</main>
+
+</body>
+</html>

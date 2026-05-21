@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>User Dashboard | RideVia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/user.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+<body class="user-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="nv-lg">
+        <div class="logo">
+            <img src="/img/ridevia_logo.webp" alt="RideVia" />
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/user/dashboard}" class="active">Dashboard</a></li>
+                <li><a th:href="@{/user/book}">Book</a></li>
+                <li><a th:href="@{/user/bookings}">Your Bookings</a></li>
+                <li><a th:href="@{/user/cars}">Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- User Info & Actions -->
+    <div class="user-actions">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <p class="username" th:text="${userName}">User</p>
+        </div>
+
+        <a th:href="@{/auth/logout}" class="logout-link">🚪 Logout</a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+    <h2>Welcome, <span th:text="${userName}">User</span> 👋</h2>
+
+    <!-- Section: My Bookings -->
+    <section class="section">
+        <div class="section-header">
+            <h3>My Upcoming Bookings</h3>
+            <a th:href="@{/user/bookings}" class="btn small">View All</a>
+        </div>
+        <div class="card-scroll" th:if="${!#lists.isEmpty(upcomingBookings)}">
+            <div class="card" th:each="booking : ${upcomingBookings}">
+                <h4 th:text="${booking.carName}"></h4>
+                <div class="card">
+                    <img th:if="${booking.imageUrls != null and !#lists.isEmpty(booking.imageUrls)}"
+                         th:src="${booking.imageUrls[0]}" alt="Car Image" style="width: 500px; height: 500px; object-fit: cover;" />
+                    <img th:unless="${booking.imageUrls != null and !#lists.isEmpty(booking.imageUrls)}"
+                         src="/img/ridevia_logo.webp" alt="Default Image" />
+                </div>
+
+                <p th:text="'From: ' + ${#temporals.format(booking.startTime, 'dd MMM yyyy')}"></p>
+                <p th:text="'To: ' + ${#temporals.format(booking.endTime, 'dd MMM yyyy')}"></p>
+                <p>Status: <span th:text="${booking.status}"></span></p>
+            </div>
+        </div>
+        <p class="empty-note" th:if="${#lists.isEmpty(upcomingBookings)}">No upcoming bookings available.</p>
+    </section>
+
+    <!-- Section: Available Cars -->
+    <section class="section">
+        <div class="section-header">
+            <h3>Available Cars</h3>
+            <a th:href="@{/user/cars}" class="btn small">View All</a>
+        </div>
+        <div class="card-scroll" th:if="${!#lists.isEmpty(availableCars)}">
+            <a th:each="car : ${availableCars}" th:href="@{/user/cars/view/{id}(id=${car.id})}" class="card-link">
+                <div class="card">
+                    <img th:if="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         th:src="${car.imageUrls[0]}" alt="Car Image" style="width: 500px; height: 500px; object-fit: cover;" />
+                    <img th:unless="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         src="/img/ridevia_logo.webp" alt="Default Image" />
+                    <h4 th:text="${car.brand + ' ' + car.model}"></h4>
+                    <p th:text="${car.type} + ' | ₹' + ${car.pricePerHour} + '/hr'"></p>
+                </div>
+            </a>
+        </div>
+        <p class="empty-note" th:if="${#lists.isEmpty(availableCars)}">No cars available for booking.</p>
+    </section>
+
+    <!-- Section: SUV Cars -->
+    <section class="section">
+        <div class="section-header">
+            <h3>SUVs</h3>
+            <a th:href="@{/user/cars/type/SUV}" class="btn small">View All</a>
+        </div>
+        <div class="card-scroll" th:if="${!#lists.isEmpty(suvCars)}">
+            <a th:each="car : ${suvCars}" th:href="@{/user/cars/view/{id}(id=${car.id})}" class="card-link">
+                <div class="card">
+                    <img th:if="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         th:src="${car.imageUrls[0]}" alt="Car Image" style="width: 500px; height: 500px; object-fit: cover;"/>
+                    <img th:unless="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         src="/img/ridevia_logo.webp" alt="Default Image" />
+                    <h4 th:text="${car.brand + ' ' + car.model}"></h4>
+                    <p th:text="${car.type} + ' | ₹' + ${car.pricePerHour} + '/hr'"></p>
+                </div>
+
+            </a>
+        </div>
+        <p class="empty-note" th:if="${#lists.isEmpty(suvCars)}">No SUV cars available.</p>
+    </section>
+
+    <!-- Section: Hatchbacks -->
+    <section class="section">
+        <div class="section-header">
+            <h3>Hatchbacks</h3>
+            <a th:href="@{/user/cars/type/Hatchback}" class="btn small">View All</a>
+        </div>
+        <div class="card-scroll" th:if="${!#lists.isEmpty(hatchbackCars)}">
+            <a th:each="car : ${hatchbackCars}" th:href="@{/user/cars/view/{id}(id=${car.id})}" class="card-link">
+                <div class="card">
+                    <img th:if="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         th:src="${car.imageUrls[0]}" alt="Car Image" style="width: 500px; height: 500px; object-fit: cover;" />
+                    <img th:unless="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         src="/img/ridevia_logo.webp" alt="Default Image" />
+                    <h4 th:text="${car.brand + ' ' + car.model}"></h4>
+                    <p th:text="${car.type} + ' | ₹' + ${car.pricePerHour} + '/hr'"></p>
+                </div>
+
+            </a>
+        </div>
+        <p class="empty-note" th:if="${#lists.isEmpty(hatchbackCars)}">No hatchback cars available.</p>
+    </section>
+
+    <!-- Section: Sedans -->
+    <section class="section">
+        <div class="section-header">
+            <h3>Sedans</h3>
+            <a th:href="@{/user/cars/type/Sedan}" class="btn small">View All</a>
+        </div>
+        <div class="card-scroll" th:if="${!#lists.isEmpty(sedanCars)}">
+            <a th:each="car : ${sedanCars}" th:href="@{/user/cars/view/{id}(id=${car.id})}" class="card-link">
+                <div class="card">
+                    <img th:if="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         th:src="${car.imageUrls[0]}" alt="Car Image" style="width: 500px; height: 500px; object-fit: cover;" />
+                    <img th:unless="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                         src="/img/ridevia_logo.webp" alt="Default Image" />
+                    <h4 th:text="${car.brand + ' ' + car.model}"></h4>
+                    <p th:text="${car.type} + ' | ₹' + ${car.pricePerHour} + '/hr'"></p>
+                </div>
+
+            </a>
+        </div>
+        <p class="empty-note" th:if="${#lists.isEmpty(sedanCars)}">No sedan cars available.</p>
+    </section>
+
+</main>
+
+</body>
+</html>

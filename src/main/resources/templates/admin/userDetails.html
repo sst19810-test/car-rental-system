@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Details | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+<body class="admin-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo">
+        <img src="/img/logo.png" alt="RideVia" />
+    </div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/admin/allbookings}">Bookings</a></li>
+            <li><a th:href="@{/admin/users}" class="active">Users</a></li>
+            <li><a th:href="@{/admin/cars}">Cars</a></li>
+            <li><a th:href="@{/admin/cars/add}">Add Car</a></li>
+            <li><a th:href="@{/auth/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+
+    <!-- Section Header -->
+    <div class="section-header">
+        <h2>User Profile</h2>
+        <a th:href="@{/admin/users}" class="btn small">← Back to Users</a>
+    </div>
+
+    <!-- User Summary -->
+    <section class="user-summary">
+        <div class="card">
+            <h3 th:text="${user.name}">User Name</h3>
+            <p><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></p>
+            <p><strong>Phone:</strong> <span th:text="${user.phone}">+91-0000000000</span></p>
+
+        </div>
+    </section>
+
+    <!-- Booking History -->
+    <section class="table-section mt-4">
+        <h3>Booking History</h3>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#Booking ID</th>
+                <th>Car</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Duration</th>
+                <th>Total Paid (₹)</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.id}"></td>
+                <td th:text="${booking.carName}"></td>
+                <td th:text="${booking.startTime}"></td>
+                <td th:text="${booking.endTime}"></td>
+                <td th:text="${booking.duration}"></td>
+                <td th:text="${booking.totalPrice}"></td>
+                <td>
+                  <span class="badge"
+                          th:classappend="${booking.status == 'COMPLETED' ? ' success' : (booking.status == 'CANCELLED' ? ' danger' : ' warning')}"
+                          th:text="${booking.status}">
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- No Bookings -->
+        <div th:if="${#lists.isEmpty(bookings)}" class="empty-note">
+            <p>This user has not made any bookings yet.</p>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

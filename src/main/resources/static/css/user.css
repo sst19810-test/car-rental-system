@@ -1,0 +1,426 @@
+/* --- YOUR ORIGINAL CSS START --- */
+/* Reset and base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fb;
+    color: #333;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background: linear-gradient(135deg, #2e3a59, #4e54c8);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.sidebar .logo img {
+    width: 110px;
+}
+
+/* Navigation Links */
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    margin: 0.6rem 0;
+}
+
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0.8rem;
+    display: block;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* User Info and Actions */
+.user-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 2rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+}
+
+.user-info .avatar {
+    font-size: 1.3rem;
+}
+
+.user-info .username {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.user-actions .action-link,
+.user-actions .logout-link {
+    display: block;
+    width: 100%;
+    color: #fdfdfd;
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin: 0.2rem 0;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.user-actions .action-link:hover,
+.user-actions .logout-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.logout-link {
+    color: #ffdddd;
+}
+
+/* Main content */
+.dashboard-content {
+    margin-left: 260px;
+    padding: 2rem;
+}
+
+.dashboard-content h2 {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    color: #2e3a59;
+}
+
+/* Sections */
+.section {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h3 {
+    font-size: 1.3rem;
+    color: #4e54c8;
+}
+
+.section-header .btn {
+    background: #4e54c8;
+    color: #fff;
+    padding: 0.4rem 0.9rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.section-header .btn:hover {
+    background: #2e3a59;
+}
+
+/* Horizontal card scroll */
+.card-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    scroll-behavior: smooth;
+}
+
+.card-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+.card-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+/* Cards */
+.card {
+    min-width: 220px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card-img {
+    width: 100%;
+    max-height: 130px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.7rem;
+}
+
+.card h4 {
+    font-size: 1.1rem;
+    color: #2e3a59;
+    margin-bottom: 0.3rem;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.empty-note {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #888;
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.8rem 1rem;
+    }
+
+    .sidebar .logo {
+        margin-bottom: 0.6rem;
+    }
+
+    .sidebar nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
+    }
+
+    .sidebar nav ul li {
+        margin: 0.3rem 0.5rem;
+    }
+
+    .user-actions {
+        border-top: none;
+        border-bottom: none;
+        padding: 0.5rem 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        gap: 1rem;
+    }
+
+    .user-info {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 0;
+    }
+
+    .user-actions .action-link,
+    .user-actions .logout-link {
+        width: auto;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    .dashboard-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+}
+
+/* --- YOUR ORIGINAL CSS END --- */
+
+
+/* --- ADDITIONAL STYLES FOR user-bookings.html (scoped, no conflict) --- */
+
+.user-booking-content {
+    margin-left: 260px;
+    padding: 2rem;
+    background: #f9fafb;
+}
+
+.user-booking-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 0 1rem;
+}
+
+.user-booking-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    border-left: 6px solid #4e73df;
+    transition: transform 0.2s ease-in-out;
+}
+
+.user-booking-card:hover {
+    transform: scale(1.01);
+}
+
+.user-booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.user-booking-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #333;
+}
+
+.user-booking-header p {
+    margin: 2px 0 0;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.user-booking-body p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.user-booking-body strong {
+    color: #111;
+}
+
+.user-booking-actions {
+    margin-top: 1rem;
+}
+
+.user-booking-actions .btn {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    margin-right: 10px;
+}
+
+.user-booking-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #111111;
+    text-transform: uppercase;
+}
+
+.user-booking-badge.success {
+    background-color: #28a745;
+}
+
+.user-booking-badge.danger {
+    background-color: #dc3545;
+}
+
+.user-booking-badge.warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.user-booking-badge.primary {
+    background-color: #007bff;
+}
+
+.user-booking-card .btn.danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.user-booking-card .btn.danger:hover {
+    background-color: #c0392b;
+}
+
+.user-booking-card .btn.primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.user-booking-card .btn.primary:hover {
+    background-color: #0056b3;
+}
+
+.user-booking-empty-note {
+    background-color: #f9f9f9;
+    padding: 1.2rem;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #666;
+}
+.flash-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}

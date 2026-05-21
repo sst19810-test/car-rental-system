@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel ="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo">
+        <img src="/img/ridevia_logo.webp" alt="RideVia" />
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a th:href="@{/admin/allbookings}">Bookings</a></li>
+            <li><a th:href="@{/admin/users}">Users</a></li>
+            <li><a th:href="@{/admin/cars}">Cars</a></li>
+            <li><a th:href="@{/admin/cars/add}">Add Car</a></li>
+            <li><a th:href="@{/auth/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+
+    <!-- Summary Cards -->
+    <section class="cards">
+        <div class="card info">
+            <h3>Total Bookings</h3>
+            <p th:text="${bookingsCount}"></p>
+        </div>
+        <div class="card info">
+            <h3>Total Profit</h3>
+            <p>$<span th:text="${totalProfit}"></span></p>
+        </div>
+        <div class="card info">
+            <h3>Available For Rent</h3>
+            <p th:text="${availableCarsCount}"></p>
+        </div>
+        <div class="card info">
+            <h3>Total Cars</h3>
+            <p th:text="${totalCarsCount}"></p>
+        </div>
+
+    </section>
+
+    <!-- Chart Section -->
+    <section class="charts">
+        <div class="chart-box">
+            <h4>Monthly Revenue</h4>
+            <canvas id="revenueChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h4>Booking Status</h4>
+            <canvas id="statusChart"></canvas>
+        </div>
+    </section>
+
+    <!-- Recent Bookings -->
+    <section class="recent-bookings">
+        <div class="section-header">
+            <h3>Recent Bookings</h3>
+            <a th:href="@{/admin/allbookings}" class="btn small">View All</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Car</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${recentBookings}">
+                <td th:text="${booking.id}"></td>
+                <td th:text="${booking.userName}"></td>
+                <td th:text="${#temporals.format(booking.startTime, 'dd MMM yyyy')}"></td>
+                <td th:text="${booking.carName}"></td>
+                <td>$<span th:text="${booking.totalPrice}"></span></td>
+                <td>
+                    <th:block th:switch="${booking.status}">
+                        <span th:case="'COMPLETED'" class="badge success" th:text="${booking.status}"></span>
+                        <span th:case="'PENDING'" class="badge warning" th:text="${booking.status}"></span>
+                        <span th:case="*"
+                              class="badge danger"
+                              th:text="${booking.status}"></span>
+                    </th:block>
+                </td>
+
+            </tr>
+            <tr th:if="${#lists.isEmpty(recentBookings)}">
+                <td colspan="6">No recent bookings found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+<script th:src="@{/js/dashboard-charts.js}"></script>
+</body>
+</html>

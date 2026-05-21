@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Users | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+<body class="admin-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo">
+        <img src="/img/logo.png" alt="RideVia" />
+    </div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/admin/allbookings}">Bookings</a></li>
+            <li><a th:href="@{/admin/users}" class="active">Users</a></li>
+            <li><a th:href="@{/admin/cars}">Cars</a></li>
+            <li><a th:href="@{/admin/cars/add}">Add Car</a></li>
+            <li><a th:href="@{/auth/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+
+    <!-- Page Header -->
+    <div class="section-header">
+        <h2>All Registered Users</h2>
+    </div>
+
+    <!-- Users Table -->
+    <section class="table-section">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.phone}"></td>
+
+                <td>
+                    <a th:href="@{'/admin/users/' + ${user.id}}" class="btn small">View Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- If no users -->
+    <div th:if="${#lists.isEmpty(users)}" class="empty-note">
+        <p>No users found.</p>
+    </div>
+
+</main>
+</body>
+</html>

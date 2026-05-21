@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Bookings | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+</head>
+<body class="admin-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo">
+        <img src="/img/logo.png" alt="RideVia" />
+    </div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/admin/allbookings}" class="active">Bookings</a></li>
+            <li><a th:href="@{/admin/users}">Users</a></li>
+            <li><a th:href="@{/admin/cars}">Cars</a></li>
+            <li><a th:href="@{/admin/cars/add}">Add Car</a></li>
+            <li><a th:href="@{/auth/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+
+    <!-- Page Header -->
+    <div class="section-header">
+        <h2>All Bookings</h2>
+    </div>
+
+    <!-- Bookings Table -->
+    <section class="table-section">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>User</th>
+                <th>Car</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Duration</th>
+                <th>Total (₹)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.id}"></td>
+                <td th:text="${booking.userName}"></td>
+                <td th:text="${booking.carName}"></td>
+                <td th:text="${booking.startTime}"></td>
+                <td th:text="${booking.endTime}"></td>
+                <td th:text="${booking.duration} "></td>
+                <td th:text="${booking.totalPrice}"></td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${booking.status == 'CONFIRMED'} ? ' success' : ' danger'"
+                          th:text="${booking.status}"></span>
+                </td>
+                <td>
+                    <a th:href="@{'/bookings/admin/view/' + ${booking.id}}" class="btn small">Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+</body>
+</html>

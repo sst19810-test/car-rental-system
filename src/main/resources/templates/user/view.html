@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Details | RideVia</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+    <link rel="stylesheet" th:href="@{/css/user.css}" />
+    <style>
+        .car-details-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .car-back-button {
+            margin-bottom: 20px;
+        }
+
+        .car-details-header img {
+            width: fit-content;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .car-info p {
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .car-info p strong {
+            color: #111;
+        }
+
+        .badge.success {
+            background-color: #4caf50;
+            padding: 4px 10px;
+            color: #fff;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .badge.danger {
+            background-color: #f44336;
+            padding: 4px 10px;
+            color: #fff;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .notification-text {
+            font-size: 16px;
+            color: #cc0000;
+            background: #ffe6e6;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body class="admin-dashboard">
+
+<aside class="sidebar">
+    <div class="nv-lg">
+        <div class="logo">
+            <img src="/img/ridevia_logo.webp" alt="RideVia" />
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/user/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/user/book}">Book</a></li>
+                <li><a th:href="@{/user/bookings}">Your Bookings</a></li>
+                <li><a th:href="@{/user/cars}">Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="user-actions">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <p class="username" th:text="${userName}">User</p>
+        </div>
+        <a th:href="@{/user/profile}" class="action-link">🛠 Update Profile</a>
+        <a th:href="@{/auth/logout}" class="logout-link">🚪 Logout</a>
+    </div>
+</aside>
+
+<main class="dashboard-content">
+    <div class="car-details-container">
+        <div class="car-back-button">
+            <a th:href="@{/user/cars}" class="btn outline small">← Back to Cars</a>
+        </div>
+
+        <div class="car-details-header">
+            <img th:if="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                 th:src="@{${car.imageUrls[0]}}" alt="Car Image" />
+            <img th:unless="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}"
+                 src="/img/ridevia_logo.webp" alt="Default Image" />
+        </div>
+
+        <div class="car-info">
+            <p><strong>Brand:</strong> <span th:text="${car.brand}"></span></p>
+            <p><strong>Model:</strong> <span th:text="${car.model}"></span></p>
+            <p><strong>Color:</strong> <span th:text="${car.color}"></span></p>
+            <p><strong>Type:</strong> <span th:text="${car.type}"></span></p>
+            <p><strong>Fuel Type:</strong> <span th:text="${car.fuelType}"></span></p>
+            <p><strong>Price Per Hour:</strong> ₹<span th:text="${car.pricePerHour}"></span></p>
+            <p><strong>Available:</strong>
+                <span class="badge" th:classappend="${car.available} ? ' success' : ' danger'"
+                      th:text="${car.available} ? 'Yes' : 'No'"></span>
+            </p>
+            <p><strong>Description:</strong> <span th:text="${car.description}"></span></p>
+        </div>
+
+        <!-- Conditional Button or Notification -->
+        <div style="margin-top: 25px;">
+            <div th:if="${car.available}">
+                <a th:href="@{'/user/book?id=' + ${car.id}}"
+                   class="btn"
+                   style="background: linear-gradient(135deg, #4e54c8, #2e3a59); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500;">
+                    🚗 Book This Car
+                </a>
+            </div>
+            <div th:unless="${car.available}" class="notification-text">
+                🚫 This car is currently not available. You will be notified once it's back!
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="car-gallery" style="margin-top: 30px;">
+            <h4>All Images</h4>
+            <th:block th:if="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}">
+                <img th:each="img : ${car.imageUrls}" th:src="@{${img}}"
+                     alt="Car Image"
+                     style="width: 150px; height: 100px; object-fit: cover; border-radius: 6px; margin-right: 20px;" />
+            </th:block>
+            <th:block th:unless="${car.imageUrls != null and !#lists.isEmpty(car.imageUrls)}">
+                <img src="/img/ridevia_logo.webp" alt="Default Image"
+                     style="width: 150px; height: 100px; object-fit: cover; border-radius: 6px;" />
+            </th:block>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

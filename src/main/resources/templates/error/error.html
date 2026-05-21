@@ -1,0 +1,20 @@
+<!-- error/error.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+<body>
+<div class="form-container">
+    <div class="form-card">
+        <img src="/img/logo.png" alt="RideVia Logo" class="form-logo" />
+        <h1>Oops! Something went wrong</h1>
+        <p>We're working to fix the issue. Please try again later.</p>
+        <a th:href="@{/}" class="btn">← Back to Home</a>
+    </div>
+</div>
+</body>
+</html>

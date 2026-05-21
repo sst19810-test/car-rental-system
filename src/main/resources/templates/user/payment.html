@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8" />
+    <title>Payment | RideVia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/user.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+    <style>
+        .payment-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .btn-pay {
+            background: #2563eb;
+            color: white;
+            padding: 0.8rem;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-pay:hover {
+            background: #1e40af;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .booking-image {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .booking-image img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body class="user-dashboard">
+
+<aside class="sidebar">
+    <div class="nv-lg">
+        <div class="logo">
+            <img src="/img/ridevia_logo.webp" alt="RideVia" />
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/user/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/user/book}">Book</a></li>
+                <li><a th:href="@{/user/bookings}">Your Bookings</a></li>
+                <li><a th:href="@{/user/cars}">Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="user-actions">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <p class="username" th:text="${userName}">User</p>
+        </div>
+        <a th:href="@{/user/profile}" class="action-link">🛠 Update Profile</a>
+        <a th:href="@{/auth/logout}" class="logout-link">🚪 Logout</a>
+    </div>
+</aside>
+
+<main class="dashboard-content">
+    <h2>💳 Payment</h2>
+
+    <!-- Booking Summary -->
+    <div class="payment-container" style="margin-bottom: 1.5rem;">
+        <h3 style="margin-bottom: 1rem;">📋 Booking Details</h3>
+
+        <div class="booking-image">
+            <img th:if="${bookingResponse.imageUrls != null and !#lists.isEmpty(bookingResponse.imageUrls)}"
+                 th:src="@{${bookingResponse.imageUrls[0]}}"
+                 alt="Car Image" />
+            <img th:unless="${bookingResponse.imageUrls != null and !#lists.isEmpty(bookingResponse.imageUrls)}"
+                 src="/img/ridevia_logo.webp"
+                 alt="Default Car Image" />
+        </div>
+
+        <p><strong>Car:</strong> <span th:text="${bookingResponse.carName}">Car Name</span></p>
+        <p><strong>User:</strong> <span th:text="${bookingResponse.userName}">User Name</span></p>
+        <p><strong>From:</strong>
+            <span th:text="${#temporals.format(bookingResponse.startTime, 'dd MMM yyyy, hh:mm a')}"></span>
+        </p>
+        <p><strong>To:</strong>
+            <span th:text="${#temporals.format(bookingResponse.endTime, 'dd MMM yyyy, hh:mm a')}"></span>
+        </p>
+        <p><strong>Duration:</strong> <span th:text="${bookingResponse.duration}">0h</span></p>
+        <p><strong>Total Amount:</strong> ₹<span th:text="${bookingResponse.totalPrice}">0.0</span></p>
+        <p><strong>Status:</strong> <span th:text="${bookingResponse.status}">Pending</span></p>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="payment-container">
+        <form th:action="@{/payment}" th:object="${paymentRequest}" method="post">
+            <input type="hidden" th:field="*{bookingId}" />
+
+            <div class="form-group">
+                <label class="form-label">Amount (₹)</label>
+                <span class="form-input" th:text="*{amount}"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="paymentMethod">Payment Method</label>
+                <select id="paymentMethod"
+                        th:field="*{paymentMethod}"
+                        class="form-input"
+                        required>
+                    <option value="" disabled selected>Select Method</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Net Banking">Net Banking</option>
+                    <option value="Wallet">Wallet</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-pay">✅ Complete Payment</button>
+            <p class="note">Your booking will be confirmed after successful payment.</p>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

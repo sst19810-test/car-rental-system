@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RideVia | Car Rental System</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+
+</head>
+
+<body>
+
+<div class="hero-section">
+  <div class="overlay">
+    <header class="navbar">
+      <img src="/img/logo.png" alt="RideVia Logo" class="logo" />
+      <nav>
+        <a th:href="@{/login}" class="nav-btn">User Login</a>
+        <a th:href="@{/register}" class="nav-btn">Register</a>
+        <a th:href="@{/admin/login}" class="nav-btn admin-btn">Admin Login</a>
+      </nav>
+    </header>
+
+    <div class="hero-content">
+      <h1 class="title">Welcome to <span>RideVia</span></h1>
+      <p class="tagline">Rent. Ride. Repeat.</p>
+      <p class="description">India's most reliable and user-friendly car rental system designed for convenience and speed.</p>
+
+      <div class="cta-buttons">
+        <a th:href="@{/auth/login}" class="btn primary">Login</a>
+        <a th:href="@{/auth/register}" class="btn primary">Register</a>
+        <a th:href="@{/auth/admin/login}" class="btn outline">Admin Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

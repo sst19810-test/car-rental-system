@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Return Car | RideVia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/user.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+    <style>
+        .return-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .return-container h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .booking-summary p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .fine-note {
+            background-color: #fff8dc;
+            color: #b45309;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            border: 1px dashed #facc15;
+        }
+
+        .btn-return {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-return:hover {
+            background-color: #1e3a8a;
+        }
+    </style>
+</head>
+<body class="user-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="nv-lg">
+        <div class="logo">
+            <img src="/img/ridevia_logo.webp" alt="RideVia" />
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/user/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/user/book}">Book</a></li>
+                <li><a th:href="@{/user/bookings}">Your Bookings</a></li>
+                <li><a th:href="@{/user/cars}">Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- User Info -->
+    <div class="user-actions">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <p class="username" th:text="${booking.userName}">User</p>
+        </div>
+        <a th:href="@{/user/profile}" class="action-link">🛠 Update Profile</a>
+        <a th:href="@{/auth/logout}" class="logout-link">🚪 Logout</a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="dashboard-content">
+    <div class="return-container">
+        <h2>🔁 Return Car</h2>
+
+        <div class="booking-summary">
+            <p><strong>Booking ID:</strong> <span th:text="${booking.id}">--</span></p>
+            <p><strong>Car:</strong> <span th:text="${booking.carName}">--</span></p>
+            <p><strong>From:</strong> <span th:text="${#temporals.format(booking.startTime, 'dd MMM yyyy, hh:mm a')}">--</span></p>
+            <p><strong>To:</strong> <span th:text="${#temporals.format(booking.endTime, 'dd MMM yyyy, hh:mm a')}">--</span></p>
+            <p><strong>Duration:</strong> <span th:text="${booking.duration}">--</span></p>
+            <p><strong>Total Paid:</strong> ₹<span th:text="${booking.totalPrice}">--</span></p>
+        </div>
+
+        <div class="fine-note" th:if="${fine > 0}">
+            ⚠️ You are returning the car late. A fine of <strong>₹<span th:text="${fine}">0.0</span></strong> will be added.
+        </div>
+        <div class="fine-note" th:if="${fine == 0}">
+            ✅ No fines! You are returning the car on time.
+        </div>
+
+        <form th:action="@{'/return/' + ${booking.id}}" method="post">
+            <button type="submit" class="btn-return">✅ Confirm Return</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

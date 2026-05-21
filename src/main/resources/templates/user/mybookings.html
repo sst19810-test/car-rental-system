@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Bookings | RideVia</title>
+    <link rel="stylesheet" th:href="@{/css/user.css}" />
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+</head>
+<body class="user-dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="nv-lg">
+        <div class="logo">
+            <img src="/img/ridevia_logo.webp" alt="RideVia" />
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/user/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/user/book}">Book</a></li>
+                <li><a th:href="@{/user/bookings}" class="active">Your Bookings</a></li>
+                <li><a th:href="@{/user/cars}">Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- User Info & Actions -->
+    <div class="user-actions">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <p class="username" th:text="${userName}">User</p>
+        </div>
+
+        <a th:href="@{/auth/logout}" class="logout-link">🚪 Logout</a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="user-booking-content">
+    <h2>📋 My Bookings</h2>
+
+    <!-- Flash Messages -->
+    <div class="flash-message success" th:if="${success}" th:text="${success}"></div>
+    <div class="flash-message error" th:if="${error}" th:text="${error}"></div>
+
+    <section class="user-booking-card-list">
+        <div th:if="${#lists.isEmpty(bookings)}" class="user-empty-note">
+            <p>You haven't booked any cars yet.</p>
+        </div>
+
+        <div th:each="booking : ${bookings}" class="user-booking-card">
+            <div class="user-booking-header">
+                <div>
+                    <h3 th:text="'Booking ID: #' + ${booking.id}"></h3>
+                    <p th:text="${booking.carName}"></p>
+                </div>
+
+                <span class="user-booking-badge"
+                      th:classappend="${booking.status == 'COMPLETED' ? ' success' :
+                                      (booking.status == 'CANCELLED' ? ' danger' :
+                                      (booking.status == 'CONFIRMED' ? ' warning' : ''))}"
+                      th:text="${booking.status}">Status</span>
+
+                <div>
+                    <img th:if="${booking.imageUrls != null and !#lists.isEmpty(booking.imageUrls)}"
+                         th:src="${booking.imageUrls[0]}"
+                         alt="Car Image"
+                         style="width: 100px; height: 100px; object-fit: cover;" />
+
+                    <img th:unless="${booking.imageUrls != null and !#lists.isEmpty(booking.imageUrls)}"
+                         src="/img/ridevia_logo.webp"
+                         alt="Default Image"
+                         style="width: 100px; height: 100px; object-fit: cover;" />
+                </div>
+            </div>
+
+            <div class="user-booking-body">
+                <p><strong>From:</strong>
+                    <span th:text="${#temporals.format(booking.startTime, 'dd MMM yyyy, hh:mm a')}"></span>
+                </p>
+                <p><strong>To:</strong>
+                    <span th:text="${#temporals.format(booking.endTime, 'dd MMM yyyy, hh:mm a')}"></span>
+                </p>
+                <p><strong>Duration:</strong> <span th:text="${booking.duration}">0 hrs</span></p>
+                <p><strong>Total Paid:</strong> ₹<span th:text="${booking.totalPrice}">0.00</span></p>
+                <p><strong>Status:</strong> <span th:text="${booking.status}">--</span></p>
+            </div>
+
+
+        <div class="user-booking-actions">
+           <!-- Cancel Button: If confirmed & booking not started -->
+           <a th:if="${booking.status.name() == 'CONFIRMED' and booking.startTime > now}"
+              th:href="@{'/bookings/cancel/' + ${booking.id}}"
+              class="btn danger small">❌ Cancel</a>
+
+           <!-- Return Button: If confirmed & ongoing (between start and end time) -->
+           <a th:if="${booking.status.name() == 'CONFIRMED' and booking.startTime <= now and booking.endTime > now}"
+              th:href="@{'/return/' + ${booking.id}}"
+              class="btn primary small">🔁 Return</a>
+       </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
